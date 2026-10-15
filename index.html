@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic & Crosswalk Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Traffic Analytics home">
+        <span class="brand-icon">↗</span><span class="brand-name">Cross<span>Watch</span><small>TRAFFIC INTELLIGENCE</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" data-view="live"><span>◉</span> Live camera <i class="live-dot"></i></button>
+        <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+        <button class="nav-item" data-view="events"><span>≋</span> Crossing events</button>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="device-status"><span class="status-dot"></span><div><b>Edge device online</b><small>Jetson • INT8 optimized</small></div></div>
+        <div class="powered">POWERED BY <b>PipeGen</b></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">CITY MOBILITY / OVERVIEW</div>
+          <h1>Traffic & Crosswalk Analytics</h1>
+          <p class="subtitle">Smarter crossings. Safer streets. Data in real time.</p>
+        </div>
+        <div class="top-actions">
+          <div class="connection"><span class="status-dot"></span><div><b>System operational</b><small id="lastUpdated">Updated just now</small></div></div>
+          <button class="icon-button" id="refreshBtn" title="Refresh sample data" aria-label="Refresh sample data">⟳</button>
+          <div class="avatar">CW</div>
+        </div>
+      </header>
+
+      <section class="filter-row">
+        <div class="location-pill"><span>⌖</span> Main Street Crosswalk <span class="chevron">⌄</span></div>
+        <div class="filter-right"><span class="range-label">TIME RANGE</span><select id="rangeSelect" aria-label="Time range"><option value="hour">Last hour</option><option value="day">Today</option><option value="week">Last 7 days</option></select><button class="export-btn" id="exportBtn">⇩ Export CSV</button></div>
+      </section>
+
+      <section class="metric-grid">
+        <article class="metric-card green">
+          <div class="metric-top"><span class="metric-label">Pedestrians</span><span class="metric-icon">♟</span></div>
+          <div class="metric-value" id="pedCount">125</div>
+          <div class="metric-foot"><span class="trend up">↗ 12.4%</span><span>vs. previous period</span></div>
+          <div class="sparkline"><svg viewBox="0 0 220 35" preserveAspectRatio="none"><path d="M0 29 L18 24 L34 27 L50 13 L67 18 L84 9 L102 17 L120 7 L138 14 L156 5 L175 11 L194 3 L220 7" /></svg></div>
+        </article>
+        <article class="metric-card purple">
+          <div class="metric-top"><span class="metric-label">Cyclists</span><span class="metric-icon">♧</span></div>
+          <div class="metric-value" id="cyclistCount">38</div>
+          <div class="metric-foot"><span class="trend up">↗ 8.1%</span><span>vs. previous period</span></div>
+          <div class="sparkline"><svg viewBox="0 0 220 35" preserveAspectRatio="none"><path d="M0 25 L18 27 L34 19 L50 24 L67 14 L84 18 L102 8 L120 16 L138 12 L156 20 L175 8 L194 12 L220 4" /></svg></div>
+        </article>
+        <article class="metric-card blue">
+          <div class="metric-top"><span class="metric-label">Cars</span><span class="metric-icon">▰</span></div>
+          <div class="metric-value" id="carCount">210</div>
+          <div class="metric-foot"><span class="trend up">↗ 15.2%</span><span>vs. previous period</span></div>
+          <div class="sparkline"><svg viewBox="0 0 220 35" preserveAspectRatio="none"><path d="M0 31 L18 24 L34 28 L50 14 L67 20 L84 10 L102 16 L120 4 L138 13 L156 8 L175 15 L194 2 L220 5" /></svg></div>
+        </article>
+        <article class="metric-card amber">
+          <div class="metric-top"><span class="metric-label">Total crossings</span><span class="metric-icon">⇄</span></div>
+          <div class="metric-value" id="totalCount">373</div>
+          <div class="metric-foot"><span class="neutral">Across all classes</span><span>this period</span></div>
+          <div class="mini-progress"><span style="width:74%"></span></div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel camera-panel" id="cameraPanel">
+          <div class="panel-heading">
+            <div><h2>Live camera feed</h2><p>CAM-01 · Main Street & 5th Avenue</p></div>
+            <span class="live-badge"><i></i> LIVE DEMO</span>
+          </div>
+          <div class="camera-scene">
+            <div class="scene-sky"></div><div class="building building-left"></div><div class="building building-right"></div>
+            <div class="road"><div class="lane lane-one"></div><div class="lane lane-two"></div></div>
+            <div class="crosswalk" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="person person-one"><i></i><b></b><em></em></div>
+            <div class="person person-two"><i></i><b></b><em></em></div>
+            <div class="cyclist"><i></i><b></b><span class="wheel one"></span><span class="wheel two"></span></div>
+            <div class="car car-one"><i></i></div><div class="car car-two"><i></i></div>
+            <div class="detect-box box-person"><label>person · 0.97</label></div>
+            <div class="detect-box box-cycle"><label>bicycle · 0.91</label></div>
+            <div class="detect-box box-car"><label>car · 0.96</label></div>
+            <div class="detect-box box-car-two"><label>car · 0.94</label></div>
+            <div class="camera-overlay"><span>● REC</span><span>1280 × 720</span><span>12.4 FPS</span></div>
+            <div class="count-line"><span></span><b>VIRTUAL COUNTING LINE</b></div>
+            <div class="feed-note">Illustrative camera preview · Connect a camera for live detections</div>
+          </div>
+          <div class="camera-footer"><div><span class="legend-dot green-dot"></span> Pedestrian <span class="legend-dot purple-dot"></span> Cyclist <span class="legend-dot blue-dot"></span> Vehicle</div><button class="text-button" id="simulateBtn">＋ Simulate crossing</button></div>
+        </article>
+
+        <article class="panel trend-panel" id="trendPanel">
+          <div class="panel-heading">
+            <div><h2>Traffic volume</h2><p>Crossings over time</p></div>
+            <button class="more-button" aria-label="More chart options">•••</button>
+          </div>
+          <div class="chart-legend"><span><i class="legend-dot green-dot"></i> Pedestrians</span><span><i class="legend-dot purple-dot"></i> Cyclists</span><span><i class="legend-dot blue-dot"></i> Cars</span></div>
+          <div class="chart-wrap"><canvas id="trafficChart" aria-label="Traffic volume line chart" role="img"></canvas></div>
+          <div class="chart-bottom"><span>09:00</span><span>09:15</span><span>09:30</span><span>09:45</span><span>10:00</span><span>NOW</span></div>
+        </article>
+
+        <article class="panel crossing-panel" id="eventsPanel">
+          <div class="panel-heading"><div><h2>Recent crossing events</h2><p>Latest objects crossing the virtual line</p></div><button class="text-button" id="viewAllBtn">View all →</button></div>
+          <div class="table-scroll"><table><thead><tr><th>OBJECT</th><th>TIME</th><th>CONFIDENCE</th><th>DIRECTION</th></tr></thead><tbody id="eventRows">
+            <tr><td><span class="object-icon person-color">♟</span> Pedestrian</td><td>10:24:18</td><td><span class="confidence">97%</span></td><td><span class="direction">↑ Northbound</span></td></tr>
+            <tr><td><span class="object-icon cyclist-color">♧</span> Cyclist</td><td>10:24:05</td><td><span class="confidence">91%</span></td><td><span class="direction">→ Eastbound</span></td></tr>
+            <tr><td><span class="object-icon car-color">▰</span> Car</td><td>10:23:52</td><td><span class="confidence">96%</span></td><td><span class="direction">↓ Southbound</span></td></tr>
+            <tr><td><span class="object-icon person-color">♟</span> Pedestrian</td><td>10:23:39</td><td><span class="confidence">94%</span></td><td><span class="direction">↑ Northbound</span></td></tr>
+          </tbody></table></div>
+        </article>
+
+        <article class="panel distribution-panel">
+          <div class="panel-heading"><div><h2>Road-user distribution</h2><p>Share of total crossings</p></div></div>
+          <div class="distribution-content"><div class="donut" id="donutChart"><div class="donut-center"><b id="donutTotal">373</b><span>Total</span></div></div>
+            <div class="distribution-legend">
+              <div><i class="legend-dot green-dot"></i><span>Pedestrians<small id="pedPercent">33.5% · 125</small></span></div>
+              <div><i class="legend-dot purple-dot"></i><span>Cyclists<small id="cyclistPercent">10.2% · 38</small></span></div>
+              <div><i class="legend-dot blue-dot"></i><span>Cars<small id="carPercent">56.3% · 210</small></span></div>
+            </div>
+          </div>
+          <div class="distribution-foot"><span class="status-dot"></span> Detection classes operating normally</div>
+        </article>
+
+        <article class="panel system-panel" id="settingsPanel">
+          <div class="panel-heading"><div><h2>Device & model</h2><p>Edge inference status</p></div><span class="online-label">ONLINE</span></div>
+          <div class="system-row"><span class="system-icon">▣</span><span>Detection model</span><b>YOLO · INT8</b></div>
+          <div class="system-row"><span class="system-icon">◇</span><span>Pipeline</span><b>PipeGen</b></div>
+          <div class="system-row"><span class="system-icon">▤</span><span>Hardware</span><b>NVIDIA Jetson</b></div>
+          <div class="system-row"><span class="system-icon">◷</span><span>Inference time</span><b>~45 ms</b></div>
+          <div class="system-row"><span class="system-icon">▧</span><span>Processing rate</span><b>12.4 FPS</b></div>
+          <div class="system-note"><span class="status-dot"></span> All systems operational</div>
+        </article>
+      </section>
+      <footer><span>© 2026 CrossWatch Analytics</span><span>Real-time insights <b>·</b> Better decisions <b>·</b> Safer communities</span><span>Edge AI · Privacy-first</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
